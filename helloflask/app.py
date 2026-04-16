@@ -43,7 +43,9 @@ def ticker():
 def ticker_post():
     ticker = request.form.get("symbol")
     try:
+        print(f"Getting price for ticker: {ticker}")
         price = get_price(ticker)
+        print(f"Price for {ticker.upper()}: ${price:.2f}")
         return f"The current price of {ticker.upper()} is ${price:.2f}."
     except Exception as e:
         return f"This ticker symbol {ticker.upper()} is not valid. Please try again."
