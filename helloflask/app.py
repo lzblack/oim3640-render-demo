@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from stocks import get_price
+import os
 
 app = Flask(__name__)
 
@@ -20,7 +21,7 @@ def hello(name=None):
 
 @app.route("/square/<int:number>")
 def square(number):
-    result = number ** 2    
+    result = number**2
     # return f"The square of {number} is {number**2}."
     return render_template("square.html", number=number, square=result)
 
@@ -29,15 +30,18 @@ def square(number):
 # /weather/<city>
 # /stock/<ticker>
 
+
 @app.route("/stock/<ticker>")
 def stock(ticker):
     price = get_price(ticker)
     return f"The current price of {ticker.upper()} is ${price:.2f}."
     # return render_template("stock.html", ticker=ticker.upper(), price=price)
 
+
 @app.get("/ticker")
 def ticker():
     return render_template("stock-form.html")
+
 
 @app.post("/ticker")
 def ticker_post():
@@ -50,5 +54,6 @@ def ticker_post():
     except Exception as e:
         return f"This ticker symbol {ticker.upper()} is not valid. Please try again."
 
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
